@@ -1,8 +1,10 @@
 {
-  "name": "insomnia-plugin-sync",
+  "name": "@cznec/insomnia-plugin-sync",
+  "author": "@cznec",
+  "homepage": "https://github.com/cznec/insomnia-plugin-sync",
   "version": "1.0.0",
   "main": "plugin.js",
-  "author": "Martin Sameš",
+  "license": "MIT",
   "insomnia": {
     "name": "sync",
     "displayName": "Sync",
