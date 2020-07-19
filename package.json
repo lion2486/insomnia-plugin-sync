@@ -1,0 +1,16 @@
+{
+  "name": "insomnia-plugin-sync",
+  "version": "1.0.0",
+  "main": "plugin.js",
+  "author": "Martin Sameš",
+  "insomnia": {
+    "name": "sync",
+    "displayName": "Sync",
+    "description": "Sync plugin"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "delay": "^4.4.0",
+    "uuid": "^8.2.0"
+  }
+}
