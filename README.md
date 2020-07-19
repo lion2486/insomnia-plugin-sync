@@ -1,1 +1,1 @@
-Insomnia Core sync plugin
+### Insomnia Core sync plugin
