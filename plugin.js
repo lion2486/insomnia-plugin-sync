@@ -14,9 +14,17 @@ const getOrSetEndpoint = async context => {
   }
 }
 
-const depositExport = async content => {
+const depositWorkspace = async content => {
   if (!fs.existsSync(__dirname+'/deposit')) fs.mkdirSync(__dirname+'/deposit')
   fs.writeFileSync(__dirname+'/deposit/'+Date.now()+'_export.json', JSON.stringify(content))
+}
+
+const getWorkspace = async (context, models) => {
+  return await context.data.export.insomnia({
+    includePrivate: false,
+    format: 'json',
+    workspace: models.workspace,
+  })
 }
 
 module.exports.workspaceActions = [
@@ -24,24 +32,15 @@ module.exports.workspaceActions = [
     label: 'Sync upload',
     icon: 'fa-upload',
     action: async (context, models) => {
-
-      const endpoint = await getOrSetEndpoint(context)
-
-      const workspace = await context.data.export.insomnia({
-        includePrivate: false,
-        format: 'json',
-        workspace: models.workspace,
-      })
-
+      if (!confirm('Ready to upload?')) return
       const revision = v4()
+      const endpoint = await getOrSetEndpoint(context)
+      const workspace = await getWorkspace(context, models)
       await context.store.setItem(storeKey('revision'), revision)
 
-      const data = {
-        workspace,
-        revision
-      }
+      const data = { workspace, revision }
 
-      await depositExport(data)
+      await depositWorkspace(data)
 
       await axios.post(endpoint, data, {
         headers: {'Content-Type': 'application/json'}
@@ -56,7 +55,11 @@ module.exports.workspaceActions = [
     label: 'Sync download',
     icon: 'fa-download',
     action: async (context, models) => {
+      if (!confirm('Ready to download?')) return
       const endpoint = await getOrSetEndpoint(context)
+      const revision = await context.store.getItem(storeKey('revision'))
+      const workspace = await getWorkspace(context, models)
+      await depositWorkspace({ workspace, revision })
 
       await axios.get(endpoint).then((res) => {
 
