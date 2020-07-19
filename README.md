@@ -1,0 +1,1 @@
+Insomnia Core sync plugin
