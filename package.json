@@ -1,10 +1,10 @@
 {
-  "name": "@cznec/insomnia-plugin-sync",
-  "author": "@cznec",
-  "homepage": "https://github.com/cznec/insomnia-plugin-sync",
-  "version": "1.2.0",
+  "name": "@lion2486/insomnia-plugin-sync",
+  "author": "@lion2486",
+  "homepage": "https://github.com/lion2486/insomnia-plugin-sync",
+  "version": "1.2.1",
   "main": "plugin.js",
-  "license": "MIT",
+  "license": "BEERWARE",
   "insomnia": {
     "name": "sync",
     "displayName": "Sync",

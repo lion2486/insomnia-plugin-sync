@@ -5,6 +5,8 @@ const { v4 } = require('uuid')
 const storeKey = key => `insomnia-plugin-sync-${key}`
 
 const getOrSetEndpoint = async context => {
+
+  console.log(context);
   if (await context.store.hasItem(storeKey('endpoint'))) {
     return context.store.getItem(storeKey('endpoint'))
   } else {
@@ -27,11 +29,19 @@ const getWorkspace = async (context, models) => {
   })
 }
 
+const workspaceEndpoint = (endpoint, name) => {
+  const url = new URL(endpoint);
+  url.searchParams.append('workspace', name);
+
+  return url.href;
+}
+
 module.exports.workspaceActions = [
   {
     label: 'Sync upload',
     icon: 'fa-upload',
     action: async (context, models) => {
+      console.log('models', models);
       if (!confirm('Ready to upload?')) return
       const revision = v4()
       const endpoint = await getOrSetEndpoint(context)
@@ -42,7 +52,7 @@ module.exports.workspaceActions = [
 
       await depositWorkspace(data)
 
-      await axios.post(endpoint, data, {
+      await axios.post(workspaceEndpoint(endpoint, models.workspace.name), data, {
         headers: {'Content-Type': 'application/json'}
       }).then((res) => {
         console.log('insomnia-plugin-sync', 'upload', res)
@@ -61,7 +71,7 @@ module.exports.workspaceActions = [
       const workspace = await getWorkspace(context, models)
       await depositWorkspace({ workspace, revision })
 
-      await axios.get(endpoint).then((res) => {
+      await axios.get(workspaceEndpoint(endpoint, models.workspace.name)).then((res) => {
 
         const data = res.data
 
@@ -87,7 +97,7 @@ module.exports.workspaceActions = [
       const endpoint = await getOrSetEndpoint(context)
       const revision = await context.store.getItem(storeKey('revision'))
 
-      await axios.get(endpoint).then((res) => {
+      await axios.get(workspaceEndpoint(endpoint, models.workspace.name)).then((res) => {
         context.app.alert('Sync plugin', revision === res.data.revision ? 'Up to date' : 'Update ready')
       })
     },
