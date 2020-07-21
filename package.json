@@ -6,9 +6,9 @@
   "main": "plugin.js",
   "license": "BEERWARE",
   "insomnia": {
-    "name": "sync",
-    "displayName": "Sync",
-    "description": "Sync plugin"
+    "name": "Server sync",
+    "displayName": "Server Sync",
+    "description": "Workspace sync plugin"
   },
   "dependencies": {
     "axios": "^0.19.2",
